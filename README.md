@@ -51,6 +51,7 @@ Other notable tools:
 - mc
 - mhsendmail
 
+
 ## Xdebug
 
 Xdebug is disabled by default.
@@ -65,3 +66,25 @@ cli
     - XDEBUG_ENABLED=1
     ...
 ```
+
+## Codebase initialization (optional, experimental)
+
+Instead of mounting the codebase from the host's file system, the container can initialize the codebase from a git repo.
+
+```yml
+cli
+...
+  environment:
+    ...
+    - GIT_URL=<url of the git repo>
+    - GIT_BRANCH=<git branch>
+    - GIT_COMMIT=<specific commit hash, optional>
+    ...
+```
+
+**Note**: This approach requires a valid SSH key to be loaded in `docksal-ssh-agent` to access private repos.
+
+**Warning**: Experimental. Don't use unless you know what you are doing.  
+Anything inside `/var/www` in the container will be destroyed during codebase initialization.  
+If you have the hosts file system mounted as project_root (`/var/www`), then the entire project codebase on the host 
+will be destroyed.

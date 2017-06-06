@@ -261,8 +261,9 @@ ENV \
 	SSH_AUTH_SOCK=/.ssh-agent/proxy-socket \
 	# Set TERM so text editors/etc. can be used
 	TERM=xterm \
-	# Allow PROJECT_ROOT to be universally used in fin custom commands (inside and outside cli)
-	PROJECT_ROOT=/var/www
+	# Allow PROJECT_ROOT and DOCROOT to be universally used in fin custom commands (inside and outside cli)
+	PROJECT_ROOT=/var/www \
+	DOCROOT=docroot
 
 USER root
 
