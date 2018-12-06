@@ -23,8 +23,9 @@ RUN set -xe; \
 	apt-get -y --no-install-recommends install >/dev/null \
 		apt-transport-https \
 		# ca-certificates and curl come from upstream
-		#ca-certificates \
-		#curl \
+		# ca-certificates \
+		# curl \
+		software-properties-common \
 		gnupg \
 		locales \
 		wget \
@@ -49,7 +50,9 @@ RUN set -xe; \
 	echo 'deb-src https://packagecloud.io/github/git-lfs/debian stretch main' | tee -a /etc/apt/sources.list.d/github_git-lfs.list; \
 	# MSQSQL repo - msodbcsql17, pecl/sqlsrv and pecl/pdo_sqlsrv (PHP 7.0+ only)
 	curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add -; \
-	echo 'deb https://packages.microsoft.com/debian/9/prod stretch main' | tee /etc/apt/sources.list.d/mssql.list;
+	echo 'deb https://packages.microsoft.com/debian/9/prod stretch main' | tee /etc/apt/sources.list.d/mssql.list; \
+	# Add Docker’s official GPG key:
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -;
 
 # Additional packages
 RUN set -xe; \
@@ -57,7 +60,12 @@ RUN set -xe; \
 	# This should be a temporary workaround until fixed upstream: https://github.com/debuerreotype/debuerreotype/issues/10
 	mkdir -p /usr/share/man/man1 /usr/share/man/man7; \
 	apt-get update >/dev/null; \
+	add-apt-repository \
+	   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+	   $(lsb_release -cs) \
+	   stable"; \
 	apt-get -y --no-install-recommends install >/dev/null \
+		docker-ce \
 		cron \
 		dnsutils \
 		git \
@@ -88,7 +96,8 @@ RUN set -xe; \
 	apt-get clean; rm -rf /var/lib/apt/lists/*
 
 RUN set -xe; \
-	# Create a regular user/group "docker" (uid = 1000, gid = 1000 ) with access to sudo
+	# Create a regular user/group "
+	" (uid = 1000, gid = 1000 ) with access to sudo
 	groupadd docker -g 1000; \
 	useradd -m -s /bin/bash -u 1000 -g 1000 -G sudo -p docker docker; \
 	echo 'docker ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
